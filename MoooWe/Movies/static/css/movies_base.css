@@ -1,0 +1,80 @@
+body {
+    background: linear-gradient(to right, #1d1f1f, #2c2d2e);
+}
+#navbar {
+  margin: auto;
+  width: 90%;
+  height: 65px;
+  margin-top: 20px;
+  border: 2px solid rgb(66, 65, 65);
+  border-radius: 10px;
+  display: flex;
+  gap: 6%;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(to right, #000000, #222 , #000);
+}
+#navbar:hover{
+  animation: myhover 0.5s forwards ease-in-out;
+}
+.nav-link a {
+  color: rgb(198, 192, 192);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 20px;
+}
+.nav-link a:hover {
+  color: white;
+}
+.nav-link:first-of-type {
+  margin-left: 2%;
+}
+.nav-link:first-of-type h3{
+  font-size: xx-large;
+}
+.lexend-exa-uniquifier {
+  font-family: "Lexend Exa", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+#navbar a {
+  position: relative;
+  color: #e0e0e0; /* Light gray for visibility on dark background */
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+#navbar a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: gold; /* Light blue for hover underline */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+#navbar a:hover {
+  color: gold; /* Changes to light blue on hover */
+  cursor: pointer;
+}
+
+#navbar a:hover::after {
+  transform: scaleX(1); /* Underline grows from center */
+}
+
+@keyframes myhover {
+  50%{
+    transform:translateY(-2.5px);
+  }
+  100%{
+    transform: translateY(-5px);
+    border: 2px solid gold;
+  }
+}
+
+

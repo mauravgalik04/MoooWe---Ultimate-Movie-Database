@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title_content %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/movies_base.css' %}">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+    <header>
+        <div id="navbar">
+            <div class="nav-link lexend-exa-uniquifier">
+              <a href="{% url 'movies_home_page' %}"><h3>MoooWe</h3></a>
+            </div>
+            <div class="nav-link lexend-exa-uniquifier">
+              <a href="{% url 'movies_home_page' %}"><h3>Home</h3></a>
+            </div>
+            <div class="nav-link lexend-exa-uniquifier">
+              <a href="{% url 'movies_movies' %}"><h3>Movies</h3></a>
+            </div>
+            <div class="nav-link lexend-exa-uniquifier">
+              <a href="{% url 'movies_genre' %}"><h3>Genres</h3></a>
+            </div>
+            <div class="nav-link lexend-exa-uniquifier">
+              <a href=""><h3>Collections</h3></a>
+            </div>
+            <div class="nav-link lexend-exa-uniquifier">
+              <a href="{% url 'movies_login' %}"><h3>Login</h3></a>
+            </div>
+        </div>
+    </header>
+    <div>
+      {%block content%}
+      {%endblock%}
+    </div>
+    <footer>
+        
+    </footer>
+</body>
+</html>
