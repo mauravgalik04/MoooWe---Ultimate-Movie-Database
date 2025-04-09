@@ -14,9 +14,12 @@
 <body>
     <header>
         <div id="navbar">
+          <div class="left-nav">
             <div class="nav-link lexend-exa-uniquifier">
               <a href="{% url 'movies_home_page' %}"><h3>MoooWe</h3></a>
             </div>
+          </div>
+          <div class="nav-right">
             <div class="nav-link lexend-exa-uniquifier">
               <a href="{% url 'movies_home_page' %}"><h3>Home</h3></a>
             </div>
@@ -27,11 +30,12 @@
               <a href="{% url 'movies_genre' %}"><h3>Genres</h3></a>
             </div>
             <div class="nav-link lexend-exa-uniquifier">
-              <a href=""><h3>Collections</h3></a>
+              <a href=""><h3>Book Now</h3></a>
             </div>
             <div class="nav-link lexend-exa-uniquifier">
               <a href="{% url 'movies_login' %}"><h3>Login</h3></a>
             </div>
+          </div>
         </div>
     </header>
     <div>

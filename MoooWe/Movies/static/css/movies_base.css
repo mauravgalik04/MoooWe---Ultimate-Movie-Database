@@ -2,20 +2,41 @@ body {
     background: linear-gradient(to right, #1d1f1f, #2c2d2e);
 }
 #navbar {
-  margin: auto;
+  position: fixed;
+  top: 0;
+  left: 2.75%;
   width: 90%;
   height: 65px;
+  z-index: 1000;
+  margin: auto;
   margin-top: 20px;
-  border: 2px solid rgb(66, 65, 65);
+  padding-left: 2%;
+  padding-right: 2%;
   border-radius: 10px;
+  border: none;
+  display: flex;
+  /* gap: 6%; */
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #000000, #222, #000);
+  border-bottom: 2px solid rgb(66, 65, 65);
+  opacity: 0.9;
+}
+.nav-left{
+  display: flex;
+  align-items: center;
+}
+.nav-right{
   display: flex;
   gap: 6%;
   align-items: center;
-  justify-content: flex-start;
-  background: linear-gradient(to right, #000000, #222 , #000);
+  justify-content: flex-end;
+  flex: 1;
+
 }
 #navbar:hover{
-  animation: myhover 0.5s forwards ease-in-out;
+  transform: scale(1.01);
+  transition: transform 0.5s;
 }
 .nav-link a {
   color: rgb(198, 192, 192);
@@ -29,7 +50,7 @@ body {
 .nav-link:first-of-type {
   margin-left: 2%;
 }
-.nav-link:first-of-type h3{
+.left-nav h3{
   font-size: xx-large;
 }
 .lexend-exa-uniquifier {
@@ -76,5 +97,4 @@ body {
     border: 2px solid gold;
   }
 }
-
 
