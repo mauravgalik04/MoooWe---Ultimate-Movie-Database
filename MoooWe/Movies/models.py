@@ -8,7 +8,7 @@ class Movie(models.Model):
     cast = models.TextField()
     story = models.TextField()
     imdb_rating = models.DecimalField(max_digits = 2 , decimal_places = 1)
-    your_rating = models.DecimalField(max_digits = 2 , decimal_places = 1)
+    your_rating = models.DecimalField(max_digits = 2 , decimal_places = 1 , default = 0)
     watchlist = models.BooleanField(default = False)
     poster = models.ImageField()
     landscape = models.ImageField()

@@ -21,7 +21,12 @@
   #heading {
     text-align: center;
   }
-
+  .genre-name {
+    text-align: center;
+    font-family: "archivo-black", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
   #content-wrapper {
     display: flex;
     width: 100%;
@@ -33,92 +38,7 @@
 
   .movie-container {
     width: 70%;
-  }
-
-  #watchlist-con {
-    position: fixed;
-    top: 125px;
-    right: 10px;
-    width: 25%;
-    padding: 20px;
-    color: black;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-    overflow-y: auto;
-    max-height: calc(100vh - 150px);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  #watchlist-con::-webkit-scrollbar {
-    display: none; 
-  }
-  .watchlist-card {
-    color: white;
-    position: relative;
-    display: flex;
-    height: 100px;
-    border-radius: 10px;
-    gap: 15px;
-    padding: 15px;
-    margin-bottom: 15px;
-    transition: transform 0.2s;
-    background: rgba(255, 255, 255, 0.1);
-    font-family: "archivo-black", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  #watchlist-header {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    font-family: "archivo-black", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  .watchlist-card:hover {
-    transform: scale(1.05);
-    transition: transform 0.2s;
-  }
-  .watchlist-poster {
-    width: 80px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-  .watchlist-poster:hover {
-    scale: 1.2;
-  }
-  .watchlist-info {
-    flex: 1;
-  }
-
-  .watchlist-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .watchlist-genre {
-    font-size: 0.8em;
-    opacity: 0.8;
-    width: 70px;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 5px 35px;
-    border-radius: 5px;
-    text-align: center;
-  }
-
-  .see-more {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    font-size: 0.8em;
-    color: #ffd700;
-    text-decoration: none;
-    opacity: 0.7;
+    margin: auto;
   }
   .movie-card {
     margin: 20px auto;
@@ -361,12 +281,67 @@
   .remove-btn:hover {
     opacity: 1;
   }
+  .back-button {
+    position: sticky;
+    top: 10px;
+    left: 5px;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: gray;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    z-index: 5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+  }
+
+  .back-button:hover {
+    background-color: gold;
+    color: white;
+  }
+  .button-text {
+    display: none;
+  }
+  .back-button:hover .button-text {
+    width: 60px;
+    opacity: 1;
+    display: inline;
+  }
+
+  .button-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .button-text {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    margin-left: 8px;
+    white-space: nowrap;
+  }
 </style>
 
 <main>
   <div id="main-section">
     <div id="content-wrapper">
       <div class="movie-container">
+        <button
+          class="back-button"
+          onclick="window.history.back()"
+          aria-label="Go back"
+        >
+          <i class="fa-solid fa-backward"></i>
+          <span class="button-text">Go Back</span>
+        </button>
+        <h1 class="genre-name">All {{genre}} Movies</h1>
         {% for movie in movies %}
         <div class="movie-card">
           <div class="movie-poster">
@@ -408,31 +383,6 @@
           </div>
         </div>
         {% endfor %}
-      </div>
-      <div id="watchlist-con">
-        <div id="watchlist-header">My Watchlist</div>
-        <div id="watchlist-items">
-          {% for movie in movies %} {% if movie.watchlist %}
-          <div class="watchlist-card">
-            <a
-              href="{% url 'remove_from_watchlist' id=movie.id %}"
-              class="remove-btn"
-            >
-              <i class="fas fa-times"></i>
-            </a>
-            <img
-              class="watchlist-poster"
-              src="{% static 'uploads/' %}{{ movie.poster }}"
-              alt="{{ movie.name }}"
-            />
-            <div class="watchlist-info">
-              <div class="watchlist-title">{{ movie.name }}</div>
-              <div class="watchlist-genre">{{ movie.genre }}</div>
-              <a href="#" class="see-more">See more →</a>
-            </div>
-          </div>
-          {% endif %} {% endfor %}
-        </div>
       </div>
     </div>
   </div>

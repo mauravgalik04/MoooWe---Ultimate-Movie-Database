@@ -1,41 +1,295 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Feature Movie</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      #main-section {
-        color: white;
-        display: block;
-        width: 100%;
-        margin: auto;
-        height: 800px;
-        border-radius: 10px;
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(to right, #000000, #222, #000);
-        padding-top: 85px;
-      }
-      #heading {
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    {% extends 'movies_base.html' %} {% load static %} {% block content %}
-    <main>
-      <div id="main-section">
-        <div id="heading">
-          <h1>Welcome to the Feature Movie page</h1>
+{% extends 'movies_base.html' %} {% load static %} {% block content %}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  #main-section {
+    color: white;
+    display: block;
+    width: 100%;
+    margin: auto;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to right, #000000, #222, #000);
+    padding-top: 85px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .movie-card {
+    width: 90%;
+    margin: auto;
+    background: linear-gradient(to right, #000000, #222, #000);
+    color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(255, 255, 255, 0.1);
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    height: 500px;
+    z-index: 10;
+    font-family: archivo-black, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 20px;
+  }
+
+  .movie-card:hover {
+    transform: scale(1.02);
+  }
+
+  .poster {
+    width: 30%;
+    overflow: hidden;
+  }
+
+  .poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+
+  .details {
+    width: 50%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  .genre-container {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+  }
+
+  .genre-tag {
+    background: gray;
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .story {
+    font-size: 16px;
+    margin: 15px 0;
+    line-height: 1.6;
+  }
+
+  .rating {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f1c40f;
+  }
+
+  .year {
+    font-size: 16px;
+    color: #bbb;
+  }
+
+  .cast {
+    font-size: 16px;
+    margin: 15px 0;
+    color: #ccc;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .rate-btn {
+    background: gold;
+    color: white;
+  }
+
+  .rate-btn:hover {
+    background: greenyellow;
+    color: #000;
+  }
+
+  .watchlist-btn {
+    background: gold;
+    color: white;
+  }
+
+  .watchlist-btn:hover {
+    background: greenyellow;
+    color: #000;
+  }
+
+  .additional-header {
+    font-size: 25px;
+    font-weight: 600;
+    color: #f1f1f1;
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f39c12;
+    font-family: archivo-black, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .additional-image {
+    width: 80%;
+    margin: auto;
+    background: #222;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+
+  .additional-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  @media (max-width: 1024px) {
+    .movie-card {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .poster {
+      width: 100%;
+      height: 450px;
+    }
+
+    .poster img {
+      border-radius: 0;
+    }
+
+    .details {
+      width: 100%;
+      padding: 20px;
+    }
+  }
+
+  .back-button {
+    position: sticky;
+    top: 10px;
+    left: 5px;
+    width: 90%;
+    margin: auto;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: gray;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    z-index: 5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+  }
+
+  .back-button:hover {
+    background-color: gold;
+    color: white;
+  }
+  .button-text {
+    display: none;
+  }
+  .back-button:hover .button-text {
+    width: 60px;
+    opacity: 1;
+    display: inline;
+  }
+
+  .button-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .button-text {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+</style>
+<main>
+  <div id="main-section">
+    <div class="container">
+      <button
+        class="back-button"
+        onclick="window.history.back()"
+        aria-label="Go back"
+      >
+        <i class="fa-solid fa-backward"></i>
+        <span class="button-text">Go Back</span>
+      </button>
+      <div class="movie-card">
+        <div class="poster">
+          <img
+            src="{% static 'uploads/' %}{{movie.poster}}"
+            alt="Movie Poster"
+          />
+        </div>
+        <div class="details">
+          <div>
+            <h2 class="title">{{movie.name}}</h2>
+            <p class="year">Release Year: {{movie.release_year}}</p>
+            <div class="genre-container">
+              <span class="genre-tag">{{movie.genre}}</span>
+            </div>
+            <p class="cast"><strong>Cast :</strong> {{movie.cast}}</p>
+            <p class="story">{{movie.story}}</p>
+            <p class="rating">⭐ IMDb: {{movie.imdb_rating}}/10</p>
+          </div>
+          <div class="actions">
+            <button class="btn rate-btn">Rate</button>
+            <a href="{% url 'add_to_watchlist' id=movie.id %}"
+              ><button class="btn watchlist-btn">Add to Watchlist +</button></a
+            >
+          </div>
         </div>
       </div>
-    </main>
-    {% endblock %}
-  </body>
-</html>
+      <h3 class="additional-header">Additional Images</h3>
+      <div class="additional-image">
+        <img
+          src="{% static 'uploads/' %}{{movie.landscape}}"
+          alt="Additional Scene"
+        />
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
