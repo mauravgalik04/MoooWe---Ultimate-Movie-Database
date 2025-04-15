@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Movies',
+    'Bookings'
 ]
 
 MIDDLEWARE = [
@@ -68,7 +69,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'MoooWe.wsgi.application'
-
+AUTH_USER_MODEL = 'Movies.AppUser'
+LOGIN_URL = 'movies_login'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

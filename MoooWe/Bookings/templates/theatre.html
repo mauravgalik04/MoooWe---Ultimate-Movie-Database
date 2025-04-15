@@ -1,0 +1,273 @@
+<!-- seats/templates/seats/theater_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater List</title>
+    <style>
+        :root {
+            --background-dark: #121212;
+            --surface-dark: #1E1E1E;
+            --primary-color: #BB86FC;
+            --secondary-color: #03DAC6;
+            --text-primary: #E1E1E1;
+            --text-secondary: #B0B0B0;
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .theater-card {
+            background: var(--surface-dark);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            padding: 25px;
+            display: flex;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        .theater-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(187, 134, 252, 0.2);
+        }
+
+        .theater-image {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-right: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theater-info {
+            flex: 1;
+        }
+
+        .theater-name {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin: 0 0 15px 0;
+            font-weight: 600;
+        }
+
+        .theater-address {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .facilities {
+            display: flex;
+            gap: 12px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .facility {
+            background: rgba(187, 134, 252, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+            border: 1px solid rgba(187, 134, 252, 0.2);
+        }
+
+        .shows-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .shows-title {
+            color: var(--secondary-color);
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .movie-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .show-time {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            color: var(--secondary-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(3, 218, 198, 0.1);
+        }
+
+        .show-time:hover {
+            background: var(--secondary-color);
+            color: var(--background-dark);
+            box-shadow: 0 0 15px rgba(3, 218, 198, 0.4);
+        }
+
+        .price-info {
+            color: var(--text-secondary);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .price-tag {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .theater-card {
+                flex-direction: column;
+            }
+
+            .theater-image {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Theater 1: PVR -->
+        <div class="theater-card">
+            <img src="/path/to/pvr-image.jpg" alt="PVR Cinemas" class="theater-image">
+            <div class="theater-info">
+                <h2 class="theater-name">PVR Cinemas - Phoenix Mall</h2>
+                <p class="theater-address">123 Phoenix Mall, High Street, City Center - 110001</p>
+                <div class="facilities">
+                    <span class="facility">4K Projection</span>
+                    <span class="facility">Dolby Atmos</span>
+                    <span class="facility">Recliner Seats</span>
+                    <span class="facility">Food Court</span>
+                </div>
+                <div class="shows-container">
+                    <h3 class="shows-title">Today's Shows</h3>
+                    <div class="movie-info">
+                        <h4>Avengers: Endgame</h4>
+                        <p>English • 3h 2min</p>
+                        <div class="show-time">10:30 AM</div>
+                        <div class="show-time">2:45 PM</div>
+                        <p class="price-info">
+                            Standard: <span class="price-tag">₹250</span> | 
+                            Premium: <span class="price-tag">₹450</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theater 2: INOX -->
+        <div class="theater-card">
+            <img src="/path/to/inox-image.jpg" alt="INOX" class="theater-image">
+            <div class="theater-info">
+                <h2 class="theater-name">INOX - Central Mall</h2>
+                <p class="theater-address">45 Central Mall, Downtown Area - 110002</p>
+                <div class="facilities">
+                    <span class="facility">IMAX 3D</span>
+                    <span class="facility">Dolby Sound</span>
+                    <span class="facility">Premium Lounge</span>
+                    <span class="facility">Valet Parking</span>
+                </div>
+                <div class="shows-container">
+                    <h3 class="shows-title">Today's Shows</h3>
+                    <div class="movie-info">
+                        <h4>Dune</h4>
+                        <p>English • 2h 35min</p>
+                        <div class="show-time">11:00 AM</div>
+                        <div class="show-time">3:15 PM</div>
+                        <p class="price-info">
+                            Standard: <span class="price-tag">₹200</span> | 
+                            Premium: <span class="price-tag">₹400</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theater 3: Cinepolis -->
+        <div class="theater-card">
+            <img src="/path/to/cinepolis-image.jpg" alt="Cinepolis" class="theater-image">
+            <div class="theater-info">
+                <h2 class="theater-name">Cinepolis - Grand Plaza</h2>
+                <p class="theater-address">78 Grand Plaza Mall, West End - 110003</p>
+                <div class="facilities">
+                    <span class="facility">4DX Experience</span>
+                    <span class="facility">Gold Class</span>
+                    <span class="facility">Gaming Zone</span>
+                    <span class="facility">Fine Dining</span>
+                </div>
+                <div class="shows-container">
+                    <h3 class="shows-title">Today's Shows</h3>
+                    <div class="movie-info">
+                        <h4>The Batman</h4>
+                        <p>English • 2h 56min</p>
+                        <div class="show-time">9:30 AM</div>
+                        <div class="show-time">1:15 PM</div>
+                        <p class="price-info">
+                            Standard: <span class="price-tag">₹280</span> | 
+                            Premium: <span class="price-tag">₹480</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theater 4: Carnival -->
+        <div class="theater-card">
+            <img src="/path/to/carnival-image.jpg" alt="Carnival Cinemas" class="theater-image">
+            <div class="theater-info">
+                <h2 class="theater-name">Carnival Cinemas - City Center</h2>
+                <p class="theater-address">234 City Center Mall, East Side - 110004</p>
+                <div class="facilities">
+                    <span class="facility">3D Screens</span>
+                    <span class="facility">Premium Seating</span>
+                    <span class="facility">Kids Zone</span>
+                    <span class="facility">Snack Bar</span>
+                </div>
+                <div class="shows-container">
+                    <h3 class="shows-title">Today's Shows</h3>
+                    <div class="movie-info">
+                        <h4>Spider-Man: No Way Home</h4>
+                        <p>English • 2h 28min</p>
+                        <div class="show-time">10:00 AM</div>
+                        <div class="show-time">4:30 PM</div>
+                        <p class="price-info">
+                            Standard: <span class="price-tag">₹220</span> | 
+                            Premium: <span class="price-tag">₹420</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

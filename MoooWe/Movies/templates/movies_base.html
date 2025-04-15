@@ -27,11 +27,24 @@
               <a href="{% url 'movies_genre' %}"><h3>Genres</h3></a>
             </div>
             <div class="nav-link ">
-              <a href=""><h3>Book Now</h3></a>
+              <a href="{% url 'booking_home' %}"><h3>Book Now</h3></a>
             </div>
+            {% if user.is_authenticated %}
+            <div class="dropdown nav-link">
+              <a class=" dropdown-btn ">{{user.email}}</a>
+              <div class="dropdown-content">
+                <a href="#home">Profile</a>
+                {% if user.is_staff %}
+                <a href="{% url 'theatre_dashboard' %}">Theatre</a>
+                {%endif%}
+                <a href="{% url 'logout' %}">Logout</a>
+              </div>
+            </div>
+            {% else %}
             <div class="nav-link ">
               <a href="{% url 'movies_login' %}"><h3>Login</h3></a>
             </div>
+            {%endif%}
           </div>
         </div>
     </header>

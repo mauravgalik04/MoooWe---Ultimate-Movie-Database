@@ -1,0 +1,123 @@
+{% extends 'movies_base.html' %} {% load static %} {% block content %}
+<style>
+  .content-con {
+    color: white;
+    width: 90%;
+    margin: auto;
+    margin-top: 105px;
+    padding: 10px;
+    font-family: "archivo-black", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background: linear-gradient(to right, #000000, #222, #000);
+    border-radius: 10px;
+  }
+  .add-theatre-sec {
+  display: flex;
+  gap: 20px;
+  margin: 20px;
+}
+
+.theatre-btn {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.theatre-btn.add {
+  background-color: #28a745;
+}
+.theatre-card{
+    width: 80%;
+    height: 300px;
+    margin: auto;
+    display: flex;
+    border: 2px solid white;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.theatre-image{
+    width: 30%;
+    overflow: hidden;
+}
+.t-image{
+    height: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+}
+.theatre-info{
+    width: 70%;
+}
+.theatre-operations{
+    display: flex;
+    justify-content: start;
+    gap: 5%;
+    align-items: center;
+}
+.show-operations{
+    display: flex;
+    justify-content: start;
+    gap: 5%;
+    align-items: center;
+    margin-top: 20px;
+}
+.theatre-btn.update {
+    display: block;
+  background-color: #ffc107;
+  color: #000;
+}
+
+.theatre-btn.delete {
+    display: block;
+  background-color: #dc3545;
+}
+
+.theatre-btn:hover {
+  opacity: 0.85;
+}
+.my-theatre-heading{
+    text-align: center;
+    text-decoration: underline;
+}
+</style>
+<main>
+  <div class="content-con">
+    <div class="heading">
+      <h2>Hello, {{user.email}}</h2>
+    </div>
+    <div class="add-theatre-sec">
+            <a href="{% url 'theatre_registration' %}" class="theatre-btn add">Add a Theatre</a>
+    </div>
+    <div class="my-theatres">
+        <h2 class="my-theatre-heading">
+            My Theatres
+        </h2>
+        {% for t in theatres %}
+        <div class="theatre-card">
+            <div class="theatre-image">
+                <img src="{% static 'uploads/' %}{{t.image}}" alt="" class="t-image">
+            </div>
+            <div class="theatre-info">
+                <h2>{{t.name}}</h2>
+                <p>Address : {{t.location}}</p>
+                <p>Capacity : {{t.capacity}} </p>
+                <div class="theatre-operations">
+                    <a href="" class="theatre-btn update">Update Theatre</a>
+                    <a href="" class="theatre-btn delete">Delete Theatre</a>
+                </div>
+                <h3>Manage Your Shows</h3>
+                <div class="show-operations">
+                    <a href="" class="theatre-btn add">Add Show</a>
+                    <a href="" class="theatre-btn update">Update your Show</a>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+  </div>
+</main>
+{%endblock%}

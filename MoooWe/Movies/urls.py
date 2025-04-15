@@ -9,6 +9,7 @@ urlpatterns = [
     path('feature_movie/<int:id>/' , views.movies_feature_movie_view , name = 'movies_feature_movie'),
     path('register/' , views.movies_register_view , name = 'movies_register'),
     path('login' , views.movies_login_view , name = 'movies_login'),
+    path('logout/' , views.logout_view , name = 'logout'),
     path('profile/<int:id>' , views.movies_profile_view , name = 'movies_profile'),
     path('addmovie/' , views.movies_add_movie_view , name = 'movies_add_movie'),
     path('update_movie/<int:id>' , views.update_movie_view , name = 'update_movie'),
