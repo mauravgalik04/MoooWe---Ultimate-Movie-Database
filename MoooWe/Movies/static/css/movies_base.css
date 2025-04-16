@@ -1,6 +1,4 @@
-body {
-  background: linear-gradient(to right, #1d1f1f, #2c2d2e);
-}
+
 #navbar {
   position: fixed;
   top: 0;
@@ -21,7 +19,7 @@ body {
   justify-content: space-between;
   background: linear-gradient(to right, #000000, #222, #000);
   border-bottom: 2px solid rgb(66, 65, 65);
-  opacity: 0.9;
+  opacity: 1;
 }
 .nav-left {
   display: flex;

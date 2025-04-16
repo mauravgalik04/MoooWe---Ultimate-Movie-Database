@@ -45,7 +45,7 @@ class AppUser(AbstractUser):
     address = models.TextField()
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     name = models.CharField(max_length=150) 
-    image = models.ImageField(default = 'None')
+    image = models.ImageField(default = 'None', upload_to='Movies/static/images')
     username = None  
 
     groups = models.ManyToManyField(
@@ -79,3 +79,13 @@ class Movie(models.Model):
     landscape = models.ImageField()
     def __str__(self):
         return self.name
+class Comment(models.Model):
+    user = models.ForeignKey(AppUser , on_delete=models.RESTRICT)
+    comment = models.TextField()
+    movie_id = models.ForeignKey(Movie, on_delete=models.RESTRICT)
+    likes = models.IntegerField( default=0)
+    dislikes = models.IntegerField( default=0)
+    time_commented = models.TimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user_id

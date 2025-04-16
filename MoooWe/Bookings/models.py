@@ -1,5 +1,5 @@
 from django.db import models
-from Movies.models import AppUser
+from Movies.models import AppUser, Movie
 # Create your models here.
 class Theatre(models.Model):
     name = models.CharField(max_length = 20)
@@ -23,8 +23,11 @@ class Show(models.Model):
         ('Evening' , 'Evening')
     )
     movie_name = models.CharField(max_length=50)
+    duration = models.CharField(max_length=10)
     time = models.CharField(max_length=20 , choices=time_choices)
     date = models.DateField()
-    theatre = models.ForeignKey(Theatre , on_delete=models.CASCADE)
+    movie_poster = models.ImageField(upload_to='Movies/static/uploads')
+    theatre = models.ForeignKey(Theatre , on_delete= models.RESTRICT)
     def __str__(self):
         return self.movie_name
+    

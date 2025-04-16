@@ -1,61 +1,220 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title_content %} {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/movies_base.css' %}">
-    <link rel="stylesheet" href="https://use.typekit.net/med7fre.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title_content %}MoooWe{% endblock %}</title>
+    <link rel="stylesheet" href="https://use.typekit.net/med7fre.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #121212;
+        color: white;
+        font-family: "archivo-black", sans-serif;
+      }
+
+      header {
+        background-color: #1e1e1e;
+        padding: 15px 40px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+
+      #navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .left-nav h3 {
+        font-size: 1.8rem;
+        color: gold;
+        letter-spacing: 1px;
+        text-decoration: none;
+      }
+      .nav-brand a {
+        text-decoration: none;
+      }
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-link a {
+        position: relative;
+        color: white;
+        text-decoration: none;
+        font-size: 1.1rem;
+        padding: 8px 14px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link a::after {
+        content: "";
+        position: absolute;
+        left: 14px;
+        bottom: 5px;
+        width: 0;
+        height: 2px;
+        background-color: gold;
+        transition: width 0.3s ease;
+      }
+
+      .nav-link a:hover::after {
+        width: calc(100% - 28px);
+      }
+
+      .nav-link a:hover {
+        color: gold;
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-btn {
+        cursor: pointer;
+        font-size: 1.1rem;
+        color: white;
+        padding: 8px 14px;
+        display: inline-block;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #2c2c2c;
+        min-width: 160px;
+        border-radius: 8px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background 0.3s;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      footer {
+        text-align: center;
+        padding: 30px 0;
+        background-color: #1e1e1e;
+        color: #aaa;
+        font-size: 0.9rem;
+      }
+      .dropdown-content a {
+        position: relative;
+        display: block;
+        padding: 10px 16px;
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .dropdown-content a::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        bottom: 8px;
+        width: 0;
+        height: 2px;
+        background-color: gold;
+        transition: width 0.3s ease;
+      }
+
+      .dropdown-content a:hover::after {
+        width: calc(100% - 32px);
+      }
+
+      .dropdown-content a:hover {
+        color: gold;
+      }
+
+      @media (max-width: 768px) {
+        .nav-right {
+          flex-direction: column;
+          gap: 10px;
+          align-items: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
     <header>
-        <div id="navbar">
-          <div class="left-nav">
-            <div class="nav-link ">
-              <a href="{% url 'movies_home_page' %}"><h3>MoooWe</h3></a>
-            </div>
-          </div>
-          <div class="nav-right">
-            <div class="nav-link ">
-              <a href="{% url 'movies_home_page' %}"><h3>Home</h3></a>
-            </div>
-            <div class="nav-link ">
-              <a href="{% url 'movies_movies' %}"><h3>Movies</h3></a>
-            </div>
-            <div class="nav-link ">
-              <a href="{% url 'movies_genre' %}"><h3>Genres</h3></a>
-            </div>
-            <div class="nav-link ">
-              <a href="{% url 'booking_home' %}"><h3>Book Now</h3></a>
-            </div>
-            {% if user.is_authenticated %}
-            <div class="dropdown nav-link">
-              <a class=" dropdown-btn ">{{user.email}}</a>
-              <div class="dropdown-content">
-                <a href="#home">Profile</a>
-                {% if user.is_staff %}
-                <a href="{% url 'theatre_dashboard' %}">Theatre</a>
-                {%endif%}
-                <a href="{% url 'logout' %}">Logout</a>
-              </div>
-            </div>
-            {% else %}
-            <div class="nav-link ">
-              <a href="{% url 'movies_login' %}"><h3>Login</h3></a>
-            </div>
-            {%endif%}
+      <div id="navbar">
+        <div class="left-nav">
+          <div class="nav-brand">
+            <a href="{% url 'movies_home_page' %}"><h3>MoooWe</h3></a>
           </div>
         </div>
+        <div class="nav-right">
+          <div class="nav-link">
+            <a href="{% url 'movies_home_page' %}">Home</a>
+          </div>
+          <div class="nav-link">
+            <a href="{% url 'movies_movies' %}">Movies</a>
+          </div>
+          <div class="nav-link">
+            <a href="{% url 'movies_genre' %}">Genres</a>
+          </div>
+          <div class="nav-link">
+            <a href="{% url 'booking_home' %}">Book Now</a>
+          </div>
+          {% if user.is_authenticated %}
+          <div class="dropdown nav-link">
+            <span class="dropdown-btn">{{ user.email }}</span>
+            <div class="dropdown-content">
+              <a href="{% url 'movies_profile'  %}">Profile</a>
+              {% if user.is_superuser %}
+              <a href="{% url 'movies_add_movie' %}">Add Movie</a>
+              {%endif%}
+              {% if user.is_staff %}
+              <a href="{% url 'theatre_dashboard' %}">Theatre</a>
+              {% endif %}
+              <a href="{% url 'logout' %}">Logout</a>
+            </div>
+          </div>
+          {% else %}
+          <div class="nav-link">
+            <a href="{% url 'movies_login' %}">Login</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </header>
-    <div>
-      {%block content%}
-      {%endblock%}
-    </div>
+
+    {% block content %} {% endblock %}
+
     <footer>
-        
+      <p>© 2025 MoooWe • All Rights Reserved</p>
     </footer>
-    <script src="https://kit.fontawesome.com/60c3389c89.js" crossorigin="anonymous"></script>
+
+    <script
+      src="https://kit.fontawesome.com/60c3389c89.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 </html>

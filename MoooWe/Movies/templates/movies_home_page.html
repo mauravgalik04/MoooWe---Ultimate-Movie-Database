@@ -304,31 +304,28 @@
           </div>
         </div>
       </div>
-      <!-- Trending Movies Section -->
       <section id="trending-section">
         <h2 class="section-title">🔥 Currently Trending</h2>
         <div class="carousel-container">
           <div class="carousel-track">
+            {% for movie in movies %}
             <div class="movie-card">
               <div class="movie-card-inner">
                 <img
-                  src="{% static 'images/avengers-landscape.jpeg' %}"
+                  src="{% static 'uploads/' %}{{movie.poster}}"
                   alt="{{ movie.title }}"
                   class="movie-image"
                 />
-
-                <!-- Always visible title -->
-                <div class="movie-title-bottom">Avengers</div>
-
-                <!-- Hover overlay -->
+                <div class="movie-title-bottom">{{movie.name}}</div>
                 <div class="movie-overlay">
-                  <h3 class="movie-title-top">Avengers</h3>
-                  <p class="movie-genre">Action/Adventure</p>
-                  <p class="movie-cast">Cast: RDJ</p>
-                  <p class="movie-year">Released: 2018</p>
+                  <h3 class="movie-title-top">{{movie.name}}</h3>
+                  <p class="movie-genre">{{movie.genre}}</p>
+                  <p class="movie-cast">Cast: {{movie.cast}}</p>
+                  <p class="movie-year">Released: {{movie.release_year}}</p>
                 </div>
               </div>
             </div>
+            {%endfor%}
           </div>
         </div>
       </section>
