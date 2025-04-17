@@ -2,57 +2,6 @@
 {% load static %}
 
 {% block content %}
-<div class="decorative-banner">
-    <img src="{% static 'images/profile-cover.jpg' %}" alt="Cinema Banner" class="decorative-image">
-</div>
-
-<div class="cover-banner">
-    <form action="{% url 'update_cover' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="cover_image" id="coverInput" hidden onchange="this.form.submit();">
-    </form>
-</div>
-
-<div class="profile-container">
-    <div class="profile-header-top">
-        <form action="{% url 'update_profile_pic' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" name="profile_picture" id="picInput" hidden onchange="this.form.submit();">
-            {% if user_profile.profile_picture %}
-            <img src="{% static 'images/animal-landscape.jpg' %}" class="profile-pic" alt="Profile Picture" onclick="document.getElementById('picInput').click();">
-            {% else %}
-            <img src="{% static 'images/default-avatar.png' %}" class="profile-pic" alt="Profile Picture" onclick="document.getElementById('picInput').click();">
-            {% endif %}
-        </form>
-        <div class="user-info">
-            <h2>{{ user_profile.full_name|default:"John Doe" }}</h2>
-            <div class="quote-container">
-                <input class="quote-input" id="quoteField" value="{{ user_profile.quote }}" onblur="updateQuote()">
-            </div>
-        </div>
-        <div class="user-details">
-            <p><strong>Full Name:</strong> {{ user_profile.full_name|default:"John Doe" }}</p>
-            <p><strong>Age:</strong> 19</p>
-            <p><strong>Gender:</strong> {{ user_profile.gender|default:"Not specified" }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Phone:</strong> {{ user_profile.phone|default:"Not specified" }}</p>
-        </div>
-    </div>
-    <a href="{% url 'movies_edit_profile' %}">Edit Profile</a>
-
-    <h3 class="section-title">Recent Reviews</h3>
-    <div class="review-card">
-        <p><strong>Movie 1</strong>: Amazing plot and great characters! <span class="rating">★★★★☆</span></p>
-    </div>
-    <div class="review-card">
-        <p><strong>Movie 2</strong>: A fantastic action film. Highly recommended! <span class="rating">★★★★★</span></p>
-    </div>
-    <div class="review-card">
-        <p><strong>Movie 3</strong>: A bit slow at first but picks up pace. <span class="rating">★★★☆☆</span></p>
-    </div>
-</div>
-
-
 <style>
     body {
         margin: 0;
@@ -415,6 +364,58 @@
         transform: scale(1.05);
     }
 </style>
+<div class="decorative-banner">
+    <img src="{% static 'images/profile-cover.jpg' %}" alt="Cinema Banner" class="decorative-image">
+</div>
+
+<div class="cover-banner">
+    <form action="{% url 'update_cover' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="cover_image" id="coverInput" hidden onchange="this.form.submit();">
+    </form>
+</div>
+
+<div class="profile-container">
+    <div class="profile-header-top">
+        <form action="{% url 'update_profile_pic' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="profile_picture" id="picInput" hidden onchange="this.form.submit();">
+            {% if user_profile.profile_picture %}
+            <img src="{% static 'images/animal-landscape.jpg' %}" class="profile-pic" alt="Profile Picture" onclick="document.getElementById('picInput').click();">
+            {% else %}
+            <img src="{% static 'images/default-avatar.png' %}" class="profile-pic" alt="Profile Picture" onclick="document.getElementById('picInput').click();">
+            {% endif %}
+        </form>
+        <div class="user-info">
+            <h2>{{ user_profile.full_name|default:"John Doe" }}</h2>
+            <div class="quote-container">
+                <input class="quote-input" id="quoteField" value="{{ user_profile.quote }}" onblur="updateQuote()">
+            </div>
+        </div>
+        <div class="user-details">
+            <p><strong>Full Name:</strong> {{ user_profile.full_name|default:"John Doe" }}</p>
+            <p><strong>Age:</strong> 19</p>
+            <p><strong>Gender:</strong> {{ user_profile.gender|default:"Not specified" }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Phone:</strong> {{ user_profile.phone|default:"Not specified" }}</p>
+        </div>
+    </div>
+    <a href="{% url 'movies_edit_profile' %}">Edit Profile</a>
+
+    <h3 class="section-title">Recent Reviews</h3>
+    {% if comments %}
+    {% for comment in comments %}
+    <div class="review-card">
+        <p><strong>{{comment.movie_id}}</strong>: {{comment.comment}}</p>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h4>No comments from you here ....</h4>
+    {% endif %}
+</div>
+
+
+
 
 <script>
     function updateQuote() {

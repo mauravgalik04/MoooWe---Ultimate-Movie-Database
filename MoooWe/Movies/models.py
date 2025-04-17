@@ -45,19 +45,9 @@ class AppUser(AbstractUser):
     address = models.TextField()
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     name = models.CharField(max_length=150) 
-    image = models.ImageField(default = 'None', upload_to='Movies/static/images')
+    image = models.ImageField(default = 'None', upload_to='Movies/static/uploads')
     username = None  
 
-    groups = models.ManyToManyField(
-        Group,
-        related_name='appuser_set',
-        blank=True
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='appuser_set',
-        blank=True
-    )
 
     objects = AppUserManager()
 

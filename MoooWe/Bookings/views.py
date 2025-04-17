@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from Movies.models import Movie
 from django.conf import settings
 from Bookings.models import Theatre , Show
-import random
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
@@ -40,6 +40,7 @@ def register_theatre_view(request):
             bronze_price=request.POST.get('bronze-price'),
             owner_id=request.user.id
         )
+        messages.success(request , "Theatre added successfully!")
     return render(request, 'theatre_registration.html')
 @login_required 
 def update_theatre_view(request , id):
@@ -57,6 +58,7 @@ def update_theatre_view(request , id):
         theatre.bronze_price=request.POST.get('bronze-price'),
         theatre.owner_id=request.user.id
         theatre.save()
+        messages.success(request , "Theatre updated successfully!")
         return redirect('theatre_dashboard')
     data = {"theatre" : theatre}
     return render(request , 'update_theatre.html' , context = data)
@@ -64,6 +66,7 @@ def update_theatre_view(request , id):
 def delete_theatre_view(request , id):
     theatre = Theatre.objects.filter(id = id)
     theatre.delete()
+    messages.success(request , "Theatre deleted!!")
     return redirect('theatre_dashboard')
 @login_required 
 def add_show_view(request , id):
@@ -77,6 +80,7 @@ def add_show_view(request , id):
         movie_poster=request.FILES.get('movie_poster'),
         theatre_id=t_id
         )
+        messages.success(request , "Show added!!")
         return redirect('theatre_dashboard')
     return render(request , 'add_show.html')
 @login_required 
@@ -96,12 +100,14 @@ def update_show_view(request , id):
         date=request.POST.get('show_date'),
         movie_poster=request.FILES.get('movie_poster')
         show.save()
+        messages.success(request , "Show updated successfully!!")
         return redirect('theatre_dashboard')
     return render(request , "update_show.html" , context=data)
 @login_required 
 def delete_show_view(request , id):
     show = Show.objects.filter(id = id)
     show.delete()
+    messages.success(request , "Show deleted!!")
     return redirect('theatre_dashboard')
 
 @login_required

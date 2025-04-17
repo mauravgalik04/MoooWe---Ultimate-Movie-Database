@@ -17,8 +17,8 @@ from django.http import JsonResponse
 # Home Page view function :
 def movies_home_page_view(request):
     movies = Movie.objects.all()
-    data = {"movies":movies}
-    return render(request, "movies_home_page.html",context=data)
+    data = {"movies": movies}
+    return render(request, "movies_home_page.html", context=data)
 
 
 # for displaying all the movies in a page :
@@ -122,6 +122,7 @@ def movies_login_view(request):
                 selected_role == "user" and not user.is_superuser
             ):
                 login(request, user)
+                messages.success(request , "Logged in successfully.")
                 return redirect("movies_home_page")
             else:
                 messages.error(
@@ -137,22 +138,27 @@ def movies_login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
+    messages.success(request , "Logged out, seeyaaa!!")
     return redirect("movies_home_page")
 
 
 @login_required
 def add_to_watchlist_view(request, id):
     movie = Movie.objects.get(id=id)
+    movie_name = movie.name
     movie.watchlist = 1
     movie.save()
+    messages.success(request , f"{movie_name} added to watchlist.")
     return redirect("movies_movies")
 
 
 @login_required
 def remove_from_watchlist_view(request, id):
     movie = Movie.objects.get(id=id)
+    movie_name = movie.name
     movie.watchlist = 0
     movie.save()
+    messages.success(request , f"{movie_name} removed from wishlist.")
     return redirect("movies_movies")
 
 
@@ -184,7 +190,7 @@ def movies_add_movie_view(request):
             poster=saved_poster if saved_poster else None,
             landscape=saved_landscape if saved_landscape else None,
         )
-
+        messages.success(request, "Movie added successfully.")
     return render(request, "movies_add_movie.html")
 
 
@@ -206,6 +212,7 @@ def update_movie_view(request, id):
             else movie.landscape
         )
         movie.save()
+        messages.success(request, "Movie updated successfully.")
         return redirect("movies_movies")
     data = {"movie": movie}
     return render(request, "movies_update_movie.html", context=data)
@@ -214,6 +221,7 @@ def update_movie_view(request, id):
 def delete_movie_view(request, id):
     movie = Movie.objects.get(id=id)
     movie.delete()
+    messages.success(request, "Movie deleted successfully.")
     return redirect("movies_movies")
 
 
@@ -229,7 +237,7 @@ def add_comment(request, movie_id):
                 comment=comment_text,
                 movie_id=movie,
             )
-
+            messages.success(request, "Comment added successfully.")
         return redirect("movies_feature_movie", id=movie.id)
 
 
@@ -241,9 +249,10 @@ def delete_comment(request, comment_id):
         if comment.user == request.user:
             movie_id = comment.movie_id.id
             comment.delete()
+            messages.success(request, "Comment deleted successfully.")
             return redirect("movies_feature_movie", id=movie_id)
         else:
-            # Optional: Handle unauthorized deletion attempt
+            messages.error(request , "Can't delete this comment.")
             return redirect("movies_feature_movie", id=comment.movie_id.id)
 
 
@@ -260,7 +269,7 @@ def movies_edit_profile_view(request):
 
             # Handle profile picture upload
             if "profile_picture" in request.FILES:
-                user.image = request.FILES["profile_picture"]
+                user.image = request.FILES.get('profile_picture')
 
             user.save()
             messages.success(request, "Profile updated successfully!")
@@ -268,25 +277,7 @@ def movies_edit_profile_view(request):
         except Exception as e:
             messages.error(request, f"Error updating profile: {str(e)}")
             return redirect("movies_edit_profile")
-    return render(request , 'movies_edit_profile.html')
-
-    # GET request - show edit form
-    try:
-        user = request.user
-        context = {
-            "user": user,
-            "user_profile": {
-                "full_name": user.name,
-                "email": user.email,
-                "phone": user.phone,
-                "gender": user.gender,
-                "profile_picture": user.image.url if user.image else None,
-            },
-        }
-        return render(request, "movies_edit_profile.html", context=context)
-    except Exception as e:
-        messages.error(request, f"Error loading edit profile: {str(e)}")
-        return redirect("movies_profile")
+    return render(request, "movies_edit_profile.html")
 
 
 @login_required
@@ -294,7 +285,7 @@ def update_profile_picture(request):
     if request.method == "POST" and request.FILES.get("profile_picture"):
         try:
             user = request.user
-            user.image = request.FILES["profile_picture"]
+            user.image = request.FILES.get('profile_picture')
             user.save()
             messages.success(request, "Profile picture updated successfully!")
         except Exception as e:
@@ -323,6 +314,7 @@ def update_user_info(request):
 @login_required
 def movies_profile_view(request):
     try:
+        comments = Comment.objects.filter(user = request.user.id)
         user = request.user
         user_profile = {
             "full_name": user.name if hasattr(user, "name") else "",
@@ -338,10 +330,10 @@ def movies_profile_view(request):
             "age": user.age if hasattr(user, "age") else None,
         }
 
-        context = {"user": user, "user_profile": user_profile}
-        return render(request, "movies_profile.html", context=context)
+        data = {"user": user, "user_profile": user_profile , "comments" : comments}
+        return render(request, "movies_profile.html", context=data)
     except Exception as e:
-        print(f"Error in profile view: {str(e)}")  # Debug print
+        print(f"Error in profile view: {str(e)}")  
         messages.error(
             request, f"An error occurred while loading your profile: {str(e)}"
         )

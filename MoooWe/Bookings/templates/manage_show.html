@@ -21,43 +21,47 @@
     border-bottom: 2px solid gray;
   }
 
-  .shows-container {
-  width: 80%;
-  height: 200px;
-  margin: 25px auto;
-  display: flex;
-  gap: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  align-items: center;
-  transition: transform 0.3s;
-  overflow: hidden;
-}
+  .shows-wrapper {
+    width: 90%;
+    margin: 25px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
+  .show-card {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    align-items: center;
+    transition: transform 0.3s;
+    overflow: hidden;
+  }
 
-  .shows-container:hover {
+  .show-card:hover {
     transform: translateY(-5px);
   }
 
   .movie-poster {
-  flex-shrink: 0;
-  width: 130px;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
+    flex-shrink: 0;
+    width: 130px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  }
 
-.movie-poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-  transition: transform 0.3s ease;
-}
-
+  .movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+  }
 
   .movie-poster img:hover {
     transform: scale(1.05);
@@ -80,9 +84,11 @@
   .movie-info p {
     margin: 4px 0;
   }
-  .movie-title{
+
+  .movie-title {
     color: #BB86FC;
   }
+
   .show-time {
     display: inline-block;
     padding: 10px 20px;
@@ -115,7 +121,7 @@
   }
 
   @media (max-width: 768px) {
-    .shows-container {
+    .show-card {
       flex-direction: column;
       align-items: flex-start;
     }
@@ -130,47 +136,50 @@
       padding-top: 10px;
     }
   }
+
   .show-operations {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  margin-left: auto;
-  padding-left: 15px;
-}
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-left: auto;
+    padding-left: 15px;
+  }
 
-.op-btn {
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: background 0.3s, color 0.3s;
-}
+  .op-btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+  }
 
-.update-btn {
-  background-color: gold;
-  color: #121212;
-}
+  .update-btn {
+    background-color: gold;
+    color: #121212;
+  }
 
-.update-btn:hover {
-  background-color: #00bfa5;
-  color: white;
-}
+  .update-btn:hover {
+    background-color: #00bfa5;
+    color: white;
+  }
 
-.delete-btn {
-  background-color: #ff4d4d;
-  color: white;
-}
+  .delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+  }
 
-.delete-btn:hover {
-  background-color: #e60000;
-  color: #fff;
-}
-.no-show{
+  .delete-btn:hover {
+    background-color: #e60000;
+    color: #fff;
+  }
+
+  .no-show {
     font-size: 0.8rem;
     text-align: center;
     margin: 50px;
-}
-.back-button {
+  }
+
+  .back-button {
     position: sticky;
     top: 10px;
     left: 5px;
@@ -194,9 +203,11 @@
     background-color: gold;
     color: white;
   }
+
   .button-text {
     display: none;
   }
+
   .back-button:hover .button-text {
     width: 60px;
     opacity: 1;
@@ -220,35 +231,35 @@
 
 <main>
   <div class="manager-con">
-    <button
-    class="back-button"
-    onclick="window.history.back()"
-    aria-label="Go back"
-  >
-    <i class="fa-solid fa-backward"></i>
-    <span class="button-text">Go Back</span>
-  </button>
+    <button class="back-button" onclick="window.history.back()" aria-label="Go back">
+      <i class="fa-solid fa-backward"></i>
+      <span class="button-text">Go Back</span>
+    </button>
+
     <h2 class="intro-title">Shows for Your Theatre</h2>
-    {% if shows %}
-    {% for s in shows %}
-    <div class="shows-container">
-      <div class="movie-poster">
-        <img src="{% static 'uploads/batman-poster.jpeg' %}" alt="{{s.movie_name}}">
-      </div>
-      <div class="movie-info">
-        <h4 class="movie-title" style="color: #BB86FC;">{{ s.movie_name }}</h4>
-        <p>Duration • {{ s.duration }} mins</p>
-        <p>Date: {{ s.date }}</p>
-        <div class="show-time">{{ s.time }}</div>
-      </div>
-      <div class="show-operations">
-        <a href="{% url 'update_show' id=s.id %}" class="op-btn update-btn">Update Show</a>
-        <a href="{% url 'delete_show' id=s.id %}" onclick="return confirm('Are you sure you want to delete this comment?');" class="op-btn delete-btn">Delete Show</a>
-      </div>    
-      {% endfor %}
-      {%else%}
-      <h2 class="no-show">No shows at your theatre currnetly.</h2>
-      {%endif%}
+
+    <div class="shows-wrapper">
+      {% if shows %}
+        {% for s in shows %}
+        <div class="show-card">
+          <div class="movie-poster">
+            <img src="{% static 'uploads/batman-poster.jpeg' %}" alt="{{s.movie_name}}">
+          </div>
+          <div class="movie-info">
+            <h4 class="movie-title">{{ s.movie_name }}</h4>
+            <p>Duration • {{ s.duration }} mins</p>
+            <p>Date: {{ s.date }}</p>
+            <div class="show-time">{{ s.time }}</div>
+          </div>
+          <div class="show-operations">
+            <a href="{% url 'update_show' id=s.id %}" class="op-btn update-btn">Update Show</a>
+            <a href="{% url 'delete_show' id=s.id %}" onclick="return confirm('Are you sure you want to delete this comment?');" class="op-btn delete-btn">Delete Show</a>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <h2 class="no-show">No shows at your theatre currently.</h2>
+      {% endif %}
     </div>
   </div>
 </main>
