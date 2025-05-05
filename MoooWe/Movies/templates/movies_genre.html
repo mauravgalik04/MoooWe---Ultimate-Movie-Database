@@ -153,9 +153,9 @@
           {% for movie in movies %}
             {% if movie.genre == genre %}
               <div class="movie-card">
-                <img src="{% static 'uploads/' %}{{movie.poster}}" alt="{{ movie.title }}">
+                <img src="{% static 'posters/' %}{{movie.poster}}" alt="{{ movie.title }}">
                 <div class="movie-overlay">
-                  <a href="{% url 'movies_feature_movie' id=movie.id %}">
+                  <a href="{% url 'movies_feature_movie' id=movie.sno %}">
                     <h3>{{ movie.name }}</h3>
                   </a>
                 </div>

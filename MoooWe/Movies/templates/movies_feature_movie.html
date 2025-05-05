@@ -443,7 +443,7 @@
 
       <div class="movie-card">
         <div class="poster">
-          <img src="{% static 'uploads/' %}{{movie.poster}}" alt="Movie Poster" />
+          <img src="{% static 'posters/' %}{{movie.poster}}" alt="Movie Poster" />
         </div>
         <div class="details">
           <div>
@@ -453,12 +453,12 @@
               <span class="genre-tag">{{movie.genre}}</span>
             </div>
             <p class="cast"><strong>Cast :</strong> {{movie.cast}}</p>
-            <p class="story">{{movie.story}}</p>
+            <p class="story">{{movie.description}}</p>
             <p class="rating">⭐ IMDb: {{movie.imdb_rating}}/10</p>
           </div>
           <div class="actions">
             <button class="btn rate-btn">Rate</button>
-            <a href="{% url 'add_to_watchlist' id=movie.id %}">
+            <a href="{% url 'add_to_watchlist' id=movie.sno %}">
               <button class="btn watchlist-btn">Add to Watchlist +</button>
             </a>
           </div>
@@ -467,7 +467,7 @@
 
       <h3 class="additional-header">Additional Images</h3>
       <div class="additional-image">
-        <img src="{% static 'uploads/' %}{{movie.landscape}}" alt="Additional Scene" />
+        <img src="{% static 'posters/' %}{{movie.landscape}}" alt="Additional Scene" />
       </div>
 
       <div class="comment-section">
@@ -478,7 +478,7 @@
               <div class="username">{{request.user.email}}</div>
             </div>
           </div>
-          <form method="post" action="{% url 'add_comment' movie_id=movie.id %}">
+          <form method="post" action="{% url 'add_comment' movie_id=movie.sno %}">
             {% csrf_token %}
             <div class="mb-3">
               <textarea class="form-control" rows="3" name="comment" placeholder="Add a comment..."></textarea>

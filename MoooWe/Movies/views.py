@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 from django.http import JsonResponse
-
-
+import requests
+api = 'http://127.0.0.1:5000/movies'
 # Create your views here.
 
 
@@ -20,19 +20,47 @@ def movies_home_page_view(request):
     data = {"movies": movies}
     return render(request, "movies_home_page.html", context=data)
 
-
-# for displaying all the movies in a page :
-def movies_movies_view(request):
-    query = request.GET.get("searchbar")
-    if query:
-        movies = Movie.objects.filter(name__icontains=query)
+#checking api view
+def all_movies(request):
+    response = requests.get(api)
+    if response.status_code != 200:
+        all_movies = []
     else:
-        movies = Movie.objects.all()
-    data = {"movies": movies}
-    return render(request, "movies_movies.html", context=data)
+        payload = response.json()
+        all_movies = payload.get("movies", [])
+
+    query = request.GET.get("searchbar", "").strip().lower()
+    if query:
+        filtered = [
+            m for m in all_movies
+            if query in m["name"].lower()
+        ]
+    else:
+        filtered = all_movies
+
+    return render(request, "all_movies.html", {"movies": filtered})
 
 
-# for displaying movies in a genre wise manner :
+def movies_movies_view(request):
+    response = requests.get(api)
+    if response.status_code != 200:
+        all_movies = []
+    else:
+        payload = response.json()
+        all_movies = payload.get("movies", [])
+
+    query = request.GET.get("searchbar", "").strip().lower()
+    if query:
+        filtered = [
+            m for m in all_movies
+            if query in m["name"].lower()
+        ]
+    else:
+        filtered = all_movies
+
+    return render(request, "all_movies.html", {"movies": filtered})
+
+
 def movies_genre_view(request):
     genres = [
         "Action",
@@ -47,8 +75,13 @@ def movies_genre_view(request):
         "Horror",
         "Other",
     ]
-    movies = Movie.objects.all()
-    data = {"genres": genres, "movies": movies}
+    response = requests.get(api)
+    if response.status_code != 200:
+        all_movies = []
+    else:
+        payload = response.json()
+        all_movies = payload.get("movies", [])
+    data = {"genres": genres, "movies": all_movies}
     return render(request, "movies_genre.html", context=data)
 
 
@@ -58,13 +91,21 @@ def all_movie_in_genre_view(request, genre):
     return render(request, "movie_all_movie_in_genre.html", context=data)
 
 
-# for displaying a single movies as featured movie :
 @login_required
 def movies_feature_movie_view(request, id):
-    movie = Movie.objects.get(id=id)
+
+    resp = requests.get(f"{api}/{id}")
+    if resp.status_code != 200:
+        messages.error(request, "Movie not found!")
+        return redirect("movies_movies")  
+
+    movie = resp.json() 
     comments = Comment.objects.filter(movie_id=id)
-    data = {"movie": movie, "comments": comments}
-    return render(request, "movies_feature_movie.html", context=data)
+    return render(request, "movies_feature_movie.html", {
+        "movie": movie,
+        "comments": comments,
+    })
+
 
 
 # for registering a user :
@@ -144,24 +185,44 @@ def logout_view(request):
 
 @login_required
 def add_to_watchlist_view(request, id):
-    movie = Movie.objects.get(id=id)
-    movie_name = movie.name
-    movie.watchlist = 1
-    movie.save()
-    messages.success(request , f"{movie_name} added to watchlist.")
+    response = requests.get(f"{api}/{id}")
+    if response.status_code != 200:
+        messages.error(request, "Movie not found.")
+        return redirect("movies_movies")
+    movie_data = response.json()
+    patch_response = requests.patch(f"{api}/{id}", json={"watchlist": 1})  
+    if patch_response.status_code in [200, 204]: 
+        messages.success(request, f"{movie_data['name']} added to watchlist.")
+    else:
+        messages.error(request, f"Failed to update watchlist for {movie_data['name']}.")
+    
     return redirect("movies_movies")
-
 
 @login_required
 def remove_from_watchlist_view(request, id):
-    movie = Movie.objects.get(id=id)
-    movie_name = movie.name
-    movie.watchlist = 0
-    movie.save()
-    messages.success(request , f"{movie_name} removed from wishlist.")
+    response = requests.get(f"{api}/{id}")
+    if response.status_code != 200:
+        messages.error(request, "Movie not found.")
+        return redirect("movies_movies")
+    movie_data = response.json()
+    patch_response = requests.patch(f"{api}/{id}", json={"watchlist": 0})  
+    if patch_response.status_code in [200, 204]: 
+        messages.success(request, f"{movie_data['name']} removed from to watchlist.")
+    else:
+        messages.error(request, f"Failed to update watchlist for {movie_data['name']}.")
+    
     return redirect("movies_movies")
 
 
+import os
+import requests
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.contrib import messages
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt  # Optional, only if needed
+
+@csrf_exempt  # Remove if CSRF protection is configured properly
 def movies_add_movie_view(request):
     if request.method == "POST":
         name = request.POST.get("movie-name")
@@ -173,25 +234,51 @@ def movies_add_movie_view(request):
         poster = request.FILES.get("poster")
         landscape = request.FILES.get("landscape")
 
-        upload_path = os.path.join(settings.BASE_DIR, "Movies/static", "uploads")
+        if not all([name, release_year, genre, story, cast, imdb_rating, poster, landscape]):
+            messages.error(request, "All fields are required.")
+            return render(request, "movies_add_movie.html")
+
+        upload_path = os.path.join(settings.BASE_DIR, "Movies/static", "posters")
         os.makedirs(upload_path, exist_ok=True)
 
         fs = FileSystemStorage(location=upload_path)
-        saved_poster = fs.save(poster.name, poster) if poster else None
-        saved_landscape = fs.save(landscape.name, landscape) if landscape else None
+        saved_poster = fs.save(poster.name, poster)
+        saved_landscape = fs.save(landscape.name, landscape)
 
-        movie = Movie.objects.create(
-            name=name,
-            release_year=release_year,
-            genre=genre,
-            cast=cast,
-            story=story,
-            imdb_rating=imdb_rating,
-            poster=saved_poster if saved_poster else None,
-            landscape=saved_landscape if saved_landscape else None,
-        )
-        messages.success(request, "Movie added successfully.")
+        poster_path = os.path.join(upload_path, saved_poster)
+        landscape_path = os.path.join(upload_path, saved_landscape)
+
+        data = {
+            "movie-name": name,
+            "release-year": release_year,
+            "imdb-rating": imdb_rating,
+            "genre": genre,
+            "movie-description": story,
+            "movie-cast": cast,
+        }
+
+        files = {
+            "poster": open(poster_path, "rb"),
+            "landscape": open(landscape_path, "rb")
+        }
+
+        try: 
+            response = requests.post(api, data=data, files=files)
+
+            if response.status_code == 201:
+                messages.success(request, "Movie added successfully.")
+            else:
+                messages.error(request, f"Failed to add movie. Error: {response.text}")
+
+        except requests.exceptions.RequestException as e:
+            messages.error(request, f"Request failed: {str(e)}")
+
+        finally:
+            files["poster"].close()
+            files["landscape"].close()
+
     return render(request, "movies_add_movie.html")
+
 
 
 def update_movie_view(request, id):

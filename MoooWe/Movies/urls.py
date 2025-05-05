@@ -23,4 +23,5 @@ urlpatterns = [
     path('profile/update-cover/', views.update_cover, name='update_cover'),
     path('profile/update-info/', views.update_user_info, name='update_user_info'),
     path('profile/update-quote/', views.update_quote, name='update_quote'),
+    path('all_movies', views.all_movies , name = 'all_movies')
 ]
